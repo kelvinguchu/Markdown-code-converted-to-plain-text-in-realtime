@@ -1,9 +1,12 @@
+/* Import the 'Poppins' font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins');
 
+/* Set the font family for the body to 'Poppins', sans-serif */
 body {
     font-family: 'Poppins', sans-serif;
 }
 
+/* Styles for the navigation bar */
 #nav {
     position: fixed;
     top: 0;
@@ -22,6 +25,7 @@ body {
     margin: 20px 0;
 }
 
+/* Styles for the navigation list */
 #nav-list {
     display: flex;
     align-items: center;
@@ -31,25 +35,29 @@ body {
     padding: 10px 0;
 }
 
-#nav-list li :not(#nav-list li:first-child) {
+/* Styles for the list items in the navigation list */
+#nav-list li{
     margin-right: 20px;
     padding: 5px 7px;
-  }
-  
+}
 
+
+
+/* Styles for the list items in the navigation list on hover */
 #nav-list li:hover {
     cursor: pointer;
     background-color: antiquewhite;
     border-radius: 10px;
     transition: all 0.3s;
-
 }
 
+/* Styles for the split container layout */
 .split-container {
     display: flex;
     height: 100vh;
 }
 
+/* Styles for the editor pane and preview pane */
 .editor-pane,
 .preview-pane {
     flex: 1;
@@ -58,6 +66,7 @@ body {
     margin-top: 5%;
 }
 
+/* Styles for the textarea */
 textarea {
     font-size: 16px;
     width: 100%;
@@ -68,6 +77,18 @@ textarea {
     outline: none;
 }
 
+/* Styles for the rendered output */
 #rendered-output {
     padding: 10px;
+}
+
+/* Styles for the heading level select dropdown */
+#heading-level {
+    padding-top: 2px;
+    margin-bottom: 2px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
 }
