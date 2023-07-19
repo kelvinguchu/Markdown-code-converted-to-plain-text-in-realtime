@@ -1,110 +1,148 @@
-'use strict'
+'use strict';
 
-let markdownInput = document.getElementById('markdown-input');
-let renderedOutput = document.getElementById('rendered-output');
+// DOM Elements for Markdown rendering
+const markdownInput = document.getElementById('markdown-input');  // Markdown input text area element
+const renderedOutput = document.getElementById('rendered-output');  // Rendered output div element
 
-window.onload = function() {
-    markdownInput.addEventListener('input', function() {
-        const markdown = markdownInput.value;
-        const html = marked.parse(markdown, { mangle: false, headerIds: false });
-        renderedOutput.innerHTML = html;
-    });
+// Event listener for rendering markdown on input change
+window.onload = () => {
+  const headingLevelSelect = document.getElementById('heading-level');
+  headingLevelSelect.style.display = 'none';  // Hide heading level select dropdown
+
+  markdownInput.addEventListener('input', () => {
+    const markdown = markdownInput.value;  // Get the current value of the markdown input
+    const html = marked.parse(markdown, { mangle: false, headerIds: false });  // Parse the markdown into HTML
+    renderedOutput.innerHTML = html;  // Update the rendered output with the HTML
+  });
+};
+
+let isHeadingActive = false;  // Flag to track if heading button is active
+
+// Utility function to update the Markdown input
+function updateMarkdownSnippet(snippet) {
+  const currentPosition = markdownInput.selectionStart;  // Get the current cursor position in the input
+  const updatedMarkdown = markdownInput.value.substring(0, currentPosition) + snippet +
+    markdownInput.value.substring(currentPosition);  // Insert the snippet at the cursor position
+  markdownInput.value = updatedMarkdown;  // Update the markdown input with the new value
+
+  // Adjust cursor position to between the snippet if necessary
+  let middle = snippet.length / 2;
+  if (snippet === '****' || snippet === '__' || snippet === '<u></u>' || snippet.includes('```') || snippet === '``') {
+    markdownInput.setSelectionRange(currentPosition + middle, currentPosition + middle);  // Place cursor in the middle of the snippet
+  } else {
+    markdownInput.setSelectionRange(currentPosition + snippet.length, currentPosition + snippet.length);  // Place cursor at the end of the snippet
+  }
+
+  setTimeout(() => markdownInput.focus(), 10);  // Set focus back to the markdown input
 }
 
-const bold = document.getElementById('bold');
-const italic = document.getElementById('italic');
-const underline = document.getElementById('underline');
-const link = document.getElementById('link');
-const unorderedList = document.getElementById('unordered-list');
-const orderedList = document.getElementById('ordered-list');
-const heading = document.getElementById('heading');
-const quote = document.getElementById('quote');
-const code = document.getElementById('code');
-const fileCode = document.getElementById('file-code');
-const image = document.getElementById('image');
+// Handle button clicks for markdown shortcuts
+document.getElementById('bold').addEventListener('click', (event) => {
+  event.preventDefault();  // Prevent the default click behavior
+  updateMarkdownSnippet('****');  // Insert bold markdown syntax
+});
 
-bold.addEventListener('click', function(event) {
-    event.preventDefault();
-  
-    const boldMarkdown = '****';
-    const currentPosition = markdownInput.selectionStart;
-    const updatedMarkdown = markdownInput.value.substring(0, currentPosition) + boldMarkdown +
-    markdownInput.value.substring(currentPosition);
-    markdownInput.value = updatedMarkdown;
-  
-    // Set the cursor position in between the `****` characters
-    const newCursorPosition = currentPosition + 2;
-    markdownInput.setSelectionRange(newCursorPosition, newCursorPosition);
-  
-    setTimeout(() => {
-      markdownInput.focus();
-    }, 10);
-  });
+document.getElementById('italic').addEventListener('click', (event) => {
+  event.preventDefault();  // Prevent the default click behavior
+  updateMarkdownSnippet('__');  // Insert italic markdown syntax
+});
 
-  italic.addEventListener('click', function(event) {
-    event.preventDefault();
-  
-    const italicMarkdown = '__';
-    const currentPosition = markdownInput.selectionStart;
-    const updatedMarkdown = markdownInput.value.substring(0, currentPosition) + italicMarkdown +
-    markdownInput.value.substring(currentPosition);
-    markdownInput.value = updatedMarkdown;
-  
-    const newCursorPosition = currentPosition + 1;
-    markdownInput.setSelectionRange(newCursorPosition, newCursorPosition);
-  
-    setTimeout(() => {
-      markdownInput.focus();
-    }, 10);
-  });
+document.getElementById('underline').addEventListener('click', (event) => {
+  event.preventDefault();  // Prevent the default click behavior
+  updateMarkdownSnippet('<u></u>');  // Insert underline markdown syntax
+});
 
-  underline.addEventListener('click', function(event) {
-    event.preventDefault();
-  
-    const underlineMarkdown = `<u></u>`;
-    const currentPosition = markdownInput.selectionStart;
-    const updatedMarkdown = markdownInput.value.substring(0, currentPosition) + underlineMarkdown +
-    markdownInput.value.substring(currentPosition);
-    markdownInput.value = updatedMarkdown;
-  
-    const newCursorPosition = currentPosition + 3;
-    markdownInput.setSelectionRange(newCursorPosition, newCursorPosition);
-  
-    setTimeout(() => {
-      markdownInput.focus();
-    }, 10);
-  });
+document.getElementById('link').addEventListener('click', (event) => {
+  event.preventDefault();  // Prevent the default click behavior
+  updateMarkdownSnippet('[Link Text](URL)');  // Insert link markdown syntax
+});
 
-  link.addEventListener('click', function(event) {
-    event.preventDefault();
-    
-    const linkMarkdown = `[Link Text](URL)`;
-    const currentPosition = markdownInput.selectionStart;
-    const updatedMarkdown = markdownInput.value.substring(0, currentPosition) + linkMarkdown +
-    markdownInput.value.substring(currentPosition);
-    markdownInput.value = updatedMarkdown;
-  
-    const newCursorPosition = currentPosition + 10;
-    markdownInput.setSelectionRange(newCursorPosition, newCursorPosition);
-  
-    setTimeout(() => {
-      markdownInput.focus();
-    }, 10);
-  })
+document.getElementById('unordered-list').addEventListener('click', (event) => {
+  event.preventDefault();  // Prevent the default click behavior
+  updateMarkdownSnippet('- ');  // Insert unordered list item markdown syntax
+});
 
-  unorderedList.addEventListener('click', function(event) {
+document.getElementById('ordered-list').addEventListener('click', (event) => {
+  event.preventDefault();  // Prevent the default click behavior
+  updateMarkdownSnippet('1. ');  // Insert ordered list item markdown syntax
+});
+
+document.getElementById('quote').addEventListener('click', (event) => {
+  event.preventDefault();  // Prevent the default click behavior
+  updateMarkdownSnippet('> ');  // Insert blockquote markdown syntax
+});
+
+document.getElementById('code').addEventListener('click', (event) => {
+  event.preventDefault();  // Prevent the default click behavior
+  updateMarkdownSnippet('```\n\n```');  // Insert code block markdown syntax
+});
+
+document.getElementById('file-code').addEventListener('click', (event) => {
+  event.preventDefault();  // Prevent the default click behavior
+  updateMarkdownSnippet('``');  // Insert inline code markdown syntax
+});
+
+document.getElementById('image').addEventListener('click', (event) => {
+  event.preventDefault();  // Prevent the default click behavior
+  updateMarkdownSnippet('![Alt Text](Image URL)');  // Insert image markdown syntax
+});
+
+document.getElementById('heading').addEventListener('click', (event) => {
+  event.preventDefault();  // Prevent the default click behavior
+  const headingLevelSelect = document.getElementById('heading-level');
+  if (!isHeadingActive) {
+    headingLevelSelect.style.display = 'inline';  // Show the heading level select dropdown
+    headingLevelSelect.selectedIndex = 0;  // Reset the selected option
+    isHeadingActive = true;  // Set the heading button as active
+  } else {
+    headingLevelSelect.style.display = 'none';  // Hide the heading level select dropdown
+    isHeadingActive = false;  // Set the heading button as inactive
+  }
+});
+
+// Event listener for heading level selection
+document.addEventListener('change', function (event) {
+  if (isHeadingActive && event.target.id === 'heading-level') {
+    const headingLevelSelect = document.getElementById('heading-level');
+    const selectedLevel = parseInt(headingLevelSelect.value);  // Get the selected heading level
+    const headingMarkdown = '#'.repeat(selectedLevel) + ' ';  // Construct the heading markdown syntax
+    updateMarkdownSnippet(headingMarkdown);  // Insert the heading markdown syntax
+
+    headingLevelSelect.style.display = 'none';  // Hide the heading level select dropdown
+    isHeadingActive = false;  // Set the heading button as inactive
+  }
+});
+
+markdownInput.addEventListener('keydown', function (event) {
+  const isOrderedListActive = document.getElementById('ordered-list').classList.contains('active');
+  const isUnorderedListActive = document.getElementById('unordered-list').classList.contains('active');
+
+  if (event.key === 'Enter' && (isOrderedListActive || isUnorderedListActive)) {
     event.preventDefault();
-  
-    const listMarkdown = '- List item\n';
+
     const currentPosition = markdownInput.selectionStart;
-    const updatedMarkdown = markdownInput.value.substring(0, currentPosition) + listMarkdown +
-    markdownInput.value.substring(currentPosition);
+    const currentLine = getCurrentLine(markdownInput.value, currentPosition);
+    let newLine;
+
+    if (currentLine.startsWith('- ') && isUnorderedListActive) {
+      newLine = '- ';
+    } else if (currentLine.match(/^\d+\.\s/) && isOrderedListActive) {
+      const number = parseInt(currentLine.match(/^\d+/)[0]) + 1;
+      newLine = `${number}. `;
+    } else {
+      newLine = isUnorderedListActive ? '- ' : '';
+    }
+
+    const updatedMarkdown = markdownInput.value.substring(0, currentPosition) + '\n' +
+      newLine + markdownInput.value.substring(currentPosition);
     markdownInput.value = updatedMarkdown;
-  
-    const newCursorPosition = currentPosition + 1;
+
+    const newCursorPosition = currentPosition + newLine.length + 1;
     markdownInput.setSelectionRange(newCursorPosition, newCursorPosition);
-  
-    setTimeout(() => {
-      markdownInput.focus();
-    }, 10);
-  });
+  }
+});
+
+function getCurrentLine(text, position) {
+  const lines = text.substring(0, position).split('\n');  // Split the text into lines up to the current position
+  return lines[lines.length - 1];  // Return the last line (current line)
+}
