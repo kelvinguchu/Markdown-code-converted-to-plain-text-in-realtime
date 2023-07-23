@@ -30,6 +30,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    flex-wrap: wrap;
     list-style: none;
     background-color: aquamarine;
     padding: 10px 0;
@@ -92,3 +93,40 @@ textarea {
     font-family: 'Poppins', sans-serif;
     cursor: pointer;
 }
+
+@media screen and (max-width: 768px) {
+    /* Adjust styles for screens with a maximum width of 768px (e.g., phones and tablets) */
+  
+    /* Update the split-container layout to a column layout */
+    .split-container {
+      flex-direction: column;
+    }
+  
+    /* Adjust height for both panes on small screens */
+    .editor-pane,
+    .preview-pane {
+      height: 50%;
+      
+    }
+
+    .split-container {
+      margin-top: 30px;
+    }
+
+    #nav-list {
+        padding: 5px 0;
+    }
+    
+    #nav-list li{
+        font-size: 15px;
+        margin-right: 6px;
+        padding: 5px 5px;
+    }
+
+    #nav {
+        height: 50px;
+        justify-content: center;
+        padding: 0 5px;
+        margin: 10px 0;
+    }
+  }
