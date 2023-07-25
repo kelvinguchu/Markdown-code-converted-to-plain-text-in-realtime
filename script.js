@@ -4,6 +4,41 @@
 const markdownInput = document.getElementById('markdown-input');  // Markdown input text area element
 const renderedOutput = document.getElementById('rendered-output');  // Rendered output div element
 
+// Function to reset the UI state after a successful copy
+function resetUIState() {
+  const copyButton = document.getElementById('copy-button');
+  const tick = document.getElementById('tick');
+
+  tick.style.display = 'none'; // Hide the "tick" indicating successful copy
+  copyButton.style.display = 'block'; // Show the "Copy" button
+}
+
+// Function to copy the plain text content of the rendered output to the clipboard
+function copyRenderedOutput() {
+  // Get the rendered HTML content
+  const outputHtml = renderedOutput.innerHTML;
+
+  // Create a temporary div element to parse the HTML content
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = outputHtml;
+
+  // Extract the plain text content from the temporary div
+  const plainTextOutput = tempDiv.textContent;
+
+  // Copy the plain text content to the clipboard
+  navigator.clipboard.writeText(plainTextOutput)
+    .then(() => {
+      const tick = document.getElementById('tick');
+      tick.style.display = 'block'; // Show the "tick" indicating successful copy
+
+      // Hide the "tick" and reset UI state after 3 seconds
+      setTimeout(resetUIState, 3000);
+    })
+    .catch((error) => {
+      console.error('Failed to copy to clipboard:', error);
+    });
+}
+
 // Event listener for rendering markdown on input change
 window.onload = () => {
   const headingLevelSelect = document.getElementById('heading-level');
@@ -14,6 +49,8 @@ window.onload = () => {
     const html = marked.parse(markdown, { mangle: false, headerIds: false });  // Parse the markdown into HTML
     renderedOutput.innerHTML = html;  // Update the rendered output with the HTML
   });
+  const copyButton = document.getElementById('copy-button');
+  copyButton.addEventListener('click', copyRenderedOutput);
 };
 
 let isHeadingActive = false;  // Flag to track if heading button is active
@@ -145,4 +182,4 @@ markdownInput.addEventListener('keydown', function (event) {
 function getCurrentLine(text, position) {
   const lines = text.substring(0, position).split('\n');  // Split the text into lines up to the current position
   return lines[lines.length - 1];  // Return the last line (current line)
-}
+};
