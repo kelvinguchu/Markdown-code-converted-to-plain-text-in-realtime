@@ -104,6 +104,42 @@ textarea {
     cursor: pointer;
 }
 
+
+#tick {
+    font-size: 15px;
+    background-color: aquamarine;
+    border: none;
+    border-radius: 50%;
+    color: rgb(0, 0, 0);
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    position: fixed;
+    bottom: 85px;
+    right: 35px;
+  }
+
+#copy-button {
+    background-color: aquamarine;
+    border: 1px solid #030303;
+    border-radius: 50%;
+    color: rgb(0, 0, 0);
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    position: fixed;
+    bottom: 80px;
+    right: 30px;
+  }
+
+
 @media screen and (max-width: 768px) {
     /* Adjust styles for screens with a maximum width of 768px (e.g., phones and tablets) */
   
